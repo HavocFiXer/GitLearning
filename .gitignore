@@ -4,3 +4,7 @@ GitSKills
 ./GitCookbook/faq
 ./GitCookbook/faq.zip
 ./GitCookbook/contract.zip
+
+#File Suffixes
+*.pdf
+*.zip
