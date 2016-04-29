@@ -1,9 +1,8 @@
 #folder
 GitSKills
-./GitCookbook/contract
-./GitCookbook/faq
-./GitCookbook/faq.zip
-./GitCookbook/contract.zip
+faq.tex
+contract.tex
+structure.tex
 
 #File Suffixes
 *.pdf
