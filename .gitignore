@@ -3,8 +3,12 @@ GitSKills
 faq.tex
 contract.tex
 structure.tex
-contract.aux
 
 #File Suffixes
 *.pdf
 *.zip
+*.swp
+*.aux
+*.log
+*.toc
+*.sql
