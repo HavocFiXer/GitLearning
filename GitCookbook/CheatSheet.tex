@@ -72,10 +72,10 @@
         tabsize=4, % 5 spaces per tab
         %
         % Put standard Perl functions not included in the default language here
-		morekeywords=[1]{global, HEAD, apt, get },
+		morekeywords=[1]{global, HEAD, apt, get, m },
         %
         % Put Perl function parameters here
-        morekeywords=[2]{add, install, config, init},
+        morekeywords=[2]{add, install, config, init, commit},
         %
         % Put user defined functions here
         morekeywords=[3]{git, sudo, make},
@@ -251,9 +251,25 @@ Initialized empty Git repository in /Users/michael/learngit/.git/
 \begin{lstlisting}
 >>git add <files>
 \end{lstlisting}
+用于将文件添加到Git仓库。
+\subsection{Commit files}
+\begin{lstlisting}
+>>git commit -m "<messages>"
+\end{lstlisting}
+用于将文件提交到Git仓库，之前add中的所有文件都会在一次commit中被提交。-m后添加对于本次提交的说明。
 \end{CJK*}
 \end{homeworkProblem}
 %----------------------------------------------------------------------------------------
+%    Chapter 3
+%----------------------------------------------------------------------------------------
+\begin{homeworkProblem}
+\begin{CJK*}{GBK}{song}
+\section{Version Control}
+\subsection{Status of Git}
+\begin{lstlisting}
+\end{lstlisting}
+\end{CJK*}
+\end{homeworkProblem}
 
 
 \end{document}
