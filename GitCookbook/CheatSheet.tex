@@ -24,6 +24,7 @@
 \usepackage{courier} % Required for the courier font
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
 \usepackage{CJK}
+\usepackage[CJKbookmarks=true,colorlinks,urlcolor=blue,linkcolor=black]{hyperref}
 
 % Margins
 \topmargin=-0.45in
@@ -63,7 +64,7 @@
         keywordstyle=[2]\color{Cerulean}\bf, % Perl function arguments purple
         keywordstyle=[3]\color{Magenta}\bf,%\underbar, % Custom functions underlined and blue
 		%otherkeywordsstyle=\color{LimeGreen},
-		otherkeywords={-,^},
+		otherkeywords={-,^,.,/},
         identifierstyle=, % Nothing special about identifiers                                         
         commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
         stringstyle=\color{GreenYellow}, % Strings are purple
@@ -71,13 +72,13 @@
         tabsize=4, % 5 spaces per tab
         %
         % Put standard Perl functions not included in the default language here
-		morekeywords=[1]{global,HEAD},
+		morekeywords=[1]{global, HEAD, apt, get },
         %
         % Put Perl function parameters here
-        morekeywords=[2]{add},
+        morekeywords=[2]{add, install, config, init},
         %
         % Put user defined functions here
-        morekeywords=[3]{git},
+        morekeywords=[3]{git, sudo, make},
        	%
         morecomment=[l][\color{Blue}]{...}, % Line continuation (...) like blue comment
         numbers=left, % Line numbers on left
@@ -191,142 +192,66 @@
 
 \begin{homeworkProblem}
 \begin{CJK*}{GBK}{song}
-\subsection{简介}
-Git是目前世界上最先进的分布式版本控制系统。
-\end{CJK*}
+\section{Git Installation}
 
-\subsubsection{View SEC}
+\subsection{Linux}
+
+
 \begin{lstlisting}
->>git add --global HEAD^ "status.txt"
+>>git
+The program 'git' is currently not installed. You can install it by typing:
+sudo apt-get install git
+\end{lstlisting}
+输入git看看系统有没有安装Git，上述是没有安装Git的情况。
+
+\subsubsection{Debian or Ubuntu Linux}
+\begin{lstlisting}
+>>sudo apt-get install git
 \end{lstlisting}
 
-\subsection{Q1.1}
-SQL solution:
-\ref{Q1.1}
-\sqlscript{Q1.1}{}
-Algebra solution:
-\begin{equation}
-	RESULT(SNO):=\pi_{CNO}(\sigma_{DEPT="MTH"}(STUDENT \mathop{\bowtie}_{CNO=CNO} ENROLL))
-\end{equation}
+\subsubsection{Other versions of Linux}
+先下载源码，解压，再依次输入：
+\begin{lstlisting}
+>>./config
+>>make
+>>sudo make install
+\end{lstlisting}
 
-\subsection{Q1.2}
-SQL solution:
-\ref{Q1.2}
-\sqlscript{Q1.2}{}
-Algebra solution:
-\begin{equation}
-	SE(GRADE, NAME) := \pi_{GRADE, NAME}(STUDENT \mathop{\bowtie}_{SNO=SNO} ENROLL)
-\end{equation}
-\begin{equation}
-	RESULT(SNO) := \pi_{NAME}(SE) - \pi_{NAME}(\sigma_{GRADE<3.66}(SE))
-\end{equation}
+\subsection{Mac OS X}
+安装homebrew，然后通过homebrew安装Git。参考homebrew文档：\url{http://brew.sh/}。\\
+或者直接从AppStore安装Xcode，Xcode集成了Git，默认没有安装，需要运行Xcode，选择菜单“Xcode”，选择“Preferences”，在弹窗中找到“Downloads”，选择“Command Line Tools”，点“Install”就可以了。
 
-\subsection{Q1.3}
-SQL solution:
-\ref{Q1.3}
-\sqlscript{Q1.3}{}
-Algebra solution:
-\begin{equation}
-	S(SNO,GRADE):=\pi_{SNO,GRADE}(\sigma_{DEPT='CSE'}(COURSE\mathop{\bowtie}_{CNO=CNO}ENROLL))
-\end{equation}
-\begin{equation}
-	M(SNO) := \pi_{SNO}(S)-\pi_{SNO}(S(SNO1, GRADE1) \mathop{\bowtie}_{GRADE1>GRADE2} S(SNO2, GRADE2))
-\end{equation}
-\begin{equation}
-	RESULT(DEPT) := \pi_{DEPT}(M \mathop{\bowtie}_{SNO=SNO} STUDENT)
-\end{equation}
+\subsection{Windows}
+msysgit: \url{https://git-for-windows.github.io}
+
+\subsection{Configuration after installation}
+\begin{lstlisting}
+>>git config --global user.name <Name>
+>>git config --global user.email <Email@sample.com>
+\end{lstlisting}
+由于Git是分布式版本控系统，每个系统必须给出Name和Email。由于--global参数，机器上的所有Git仓库都会使用这个配置。
+
+\end{CJK*}
 
 \end{homeworkProblem}
-
+\clearpage
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
-
 \begin{homeworkProblem}
-\subsection{View Used for This Problem}
-
-\subsubsection{View SEC}
-\ref{SEC2}
-\sqlscript{SEC2}{}%to add description
-\subsubsection{View SE}
-\ref{SE2}
-\sqlscript{SE2}{}%to add description
-\subsubsection{View ALLS}
-\ref{ALLS}
-\sqlscript{ALLS}{}%to add description
-\subsubsection{View NOTS}
-\ref{NOTS}
-\sqlscript{NOTS}{}%to add description
-\subsubsection{View NGB}
-\ref{NGB}
-\sqlscript{NGB}{}%to add description
-
-\subsection{Q2.1}
-SQL solution:
-\ref{Q2.1}
-\sqlscript{Q2.1}{} 
-\subsection{Q2.2}
-SQL solution:
-\ref{Q2.2}
-\sqlscript{Q2.2}{}
-
-\subsection{Q2.3}
-SQL solution:
-\ref{Q2.3}
-\sqlscript{Q2.3}{}
-
-\end{homeworkProblem}
-
-%----------------------------------------------------------------------------------------
-\begin{homeworkProblem}
-
-\subsection{Q3.1}
-\textbf{Explanation:} Find the numbers of all the students who enrolled only 1 course.\\
-Algebra solution:
-\begin{equation}
-	G(SNO):=\pi_{SNO}(ENROLL \mathop{\bowtie}_{SNO=SNO and CNO<>CNO} ENROLL)
-\end{equation}
-\begin{equation}
-	RESULT(SNO):=\pi_{SNO}(ENROLL)-\pi_{SNO}(G)
-\end{equation}
-
-\subsection{Q3.2}
-\textbf{Explanation:} Find the numbers of all the students who have enrolled courses.\\
-\begin{equation}
-	RESULT(SNO):= \pi_{SNO}(SUTDENT \mathop{\bowtie}_{SNO=SNO} ENROLL)
-\end{equation}
-
-\subsection{Q3.3}
-\textbf{Explanation:} Find the numbers of all the students who have enrolled courses.
-
-\end{homeworkProblem}
-%----------------------------------------------------------------------------------------
-\begin{homeworkProblem}
-\subsection{View Used for This Problem}
-
-\subsubsection{View CNP}
-\ref{CNP}
-\sqlscript{CNP}{}%to add description
-\subsubsection{View CNA}
-\ref{CNA}
-\sqlscript{CNA}{}%to add description
-
-\subsection{Q4.1}
-SQL solution:
-\ref{Q4.1}
-\sqlscript{Q4.1}{}
-
-\subsection{Q4.2}
-SQL solution:
-\ref{Q4.2}
-\sqlscript{Q4.2}{}
-
-\subsection{Q0}
-\textbf{Note that in my solution I didn't use new claus of SQL but some basic calculations to solve this problem.}\\
-SQL solution:
-\ref{Q0}
-\sqlscript{Q0}{}
-
+\begin{CJK*}{GBK}{song}
+\section{Repository Creation}
+\subsection{Create repository}
+\begin{lstlisting}
+>>git init
+Initialized empty Git repository in /Users/michael/learngit/.git/
+\end{lstlisting}
+目录下会多出一个.git文件夹，用来跟踪管理版本库。上述是一个空仓库的情况。在Windows下使用时确保目录名中不包含中文字符。
+\subsection{Add files}
+\begin{lstlisting}
+>>git add <files>
+\end{lstlisting}
+\end{CJK*}
 \end{homeworkProblem}
 %----------------------------------------------------------------------------------------
 
