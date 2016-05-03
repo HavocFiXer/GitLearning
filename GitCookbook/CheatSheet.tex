@@ -64,7 +64,7 @@
         keywordstyle=[2]\color{Cerulean}\bf, % Perl function arguments purple
         keywordstyle=[3]\color{Magenta}\bf,%\underbar, % Custom functions underlined and blue
 		%otherkeywordsstyle=\color{LimeGreen},
-		otherkeywords={-,^,.,/},
+		otherkeywords={-,^,.,/,=},
         identifierstyle=, % Nothing special about identifiers                                         
         commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
         stringstyle=\color{GreenYellow}, % Strings are purple
@@ -72,10 +72,10 @@
         tabsize=4, % 5 spaces per tab
         %
         % Put standard Perl functions not included in the default language here
-		morekeywords=[1]{global, HEAD, apt, get, m },
+		morekeywords=[1]{global, HEAD, apt, get, m, pretty, oneline, hard, ssh, keygen, t, C, u, b, abbrev, graph, no, ff, pop, list, drop, v, d, D, apply, upstream, tags},
         %
         % Put Perl function parameters here
-        morekeywords=[2]{add, install, config, init, commit},
+        morekeywords=[2]{add, install, config, init, commit, diff, log, reset, checkout, rm, relog, rsa, push, remote, clone, checkout, branch, merge,stash, tag, show},
         %
         % Put user defined functions here
         morekeywords=[3]{git, sudo, make},
@@ -234,7 +234,7 @@ msysgit: \url{https://git-for-windows.github.io}
 \end{CJK*}
 
 \end{homeworkProblem}
-\clearpage
+%\clearpage
 %----------------------------------------------------------------------------------------
 %	PROBLEM 2
 %----------------------------------------------------------------------------------------
@@ -251,25 +251,271 @@ Initialized empty Git repository in /Users/michael/learngit/.git/
 \begin{lstlisting}
 >>git add <files>
 \end{lstlisting}
-用于将文件添加到Git仓库。
+将文件添加到Git仓库（暂存区）。
 \subsection{Commit files}
 \begin{lstlisting}
 >>git commit -m "<messages>"
 \end{lstlisting}
-用于将文件提交到Git仓库，之前add中的所有文件都会在一次commit中被提交。-m后添加对于本次提交的说明。
+将文件提交到Git仓库（提交暂存区的内容到当前分支），之前add中的所有文件都会在一次commit中被提交。-m后添加对于本次提交的说明。
 \end{CJK*}
 \end{homeworkProblem}
+%\clearpage
 %----------------------------------------------------------------------------------------
-%    Chapter 3
+%    Chapter 4
 %----------------------------------------------------------------------------------------
 \begin{homeworkProblem}
 \begin{CJK*}{GBK}{song}
 \section{Version Control}
-\subsection{Status of Git}
+\subsection{Status of repository}
 \begin{lstlisting}
+>>git status
 \end{lstlisting}
+查看Git仓库的当前状态。
+\subsection{Version differences}
+\begin{lstlisting}
+>>git diff <file>
+\end{lstlisting}
+查看当前文件和版本库中的文件区别，$<file>$为文件名。\\
+\begin{lstlisting}
+>>git diff <commitID> <commitID>
+\end{lstlisting}
+查看两个版本之间的区别，$<commitID>$为版本号。\\
+\begin{lstlisting}
+>>git diff <commitID/HEAD> -- <file>
+\end{lstlisting}
+查看某个版本与当前文件的区别，HEAD为当前版本。
+\subsection{Log of versions}
+\begin{lstlisting}
+>>git log
+\end{lstlisting}
+查看版本信息\\
+\begin{lstlisting}
+>>git log --pretty=oneline
+\end{lstlisting}
+把每个版本信息减少到一行。\\
+\begin{lstlisting}
+>>git log --graph --pretty=oneline --abbrev-commit
+\end{lstlisting}
+查看分支合并情况%\\
+%\begin{lstlisting}
+%>>git log --color --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit
+%\end{lstlisting}
+%非常炫酷的效果。
+\subsection{Version rollback}
+\begin{lstlisting}
+>>git reset --hard HEAD^
+\end{lstlisting}
+从当前状态回退一个版本。HEAD表示当前版本，HEAD\textasciicircum 表示上一个版本，HEAD\textasciicircum\textasciicircum 表示上两个版本，HEAD\textasciitilde100表示上一百个版本。\\
+\begin{lstlisting}
+>>git reset --hard <commitID>
+\end{lstlisting}
+回退到某一版本。
+\subsection{Record of commands}
+\begin{lstlisting}
+>>git relog
+\end{lstlisting}
+查看使用git时的每条历史命令。
+\subsection{Undo changes}
+\begin{lstlisting}
+>>git checkout -- <file>
+\end{lstlisting}
+会退到暂存区与分支当中最新的状态，即让文件回到最近一次git commit或git add时的状态。\\
+\begin{lstlisting}
+>>git reset HEAD <file>
+\end{lstlisting}
+把暂存区的修改撤销掉，重新放入工作区。（如果需要把工作区的也撤销，参照上一条命令。）当需要撤销的修改已经被add时，使用该命令撤销。
+\subsection{Delete files from Git}
+\begin{lstlisting}
+>>git rm <file>
+\end{lstlisting}
+用于删除Git中的某个文件。类似add，之后需要commit。同样也可以进行撤销。
 \end{CJK*}
 \end{homeworkProblem}
 
+%----------------------------------------------------------------------------------------
+%    Chapter 5
+%----------------------------------------------------------------------------------------
+\begin{homeworkProblem}
+\begin{CJK*}{GBK}{song}
+\section{Remote Repository}
+\subsection{Add a remote repository}
+\begin{lstlisting}
+>>ssh-keygen -t rsa -C <Email>
+\end{lstlisting}
+上述命令会在用户目录下新建.ssh文件夹，并在其中建立id\_rsa和id\_isa.pub两个文件，前者为私钥后者为公钥。将公钥粘贴在Gitbub里面。\\
+\begin{lstlisting}
+>>git remote add origin git@github.com:<Name>/<Repository>.git
+\end{lstlisting}
+现在远程库上建立仓库，然后可以用该命令建立远程库。origin为库名，一般远程库命名为origin。$<Repository>$是建立的仓库名称。\\
+\begin{lstlisting}
+>>git push -u origin <branchID>
+\end{lstlisting}
+将本地库中的内容推送到远程库上。第一次使用时加上-u参数，会将相应远程库与本地分支关联起来，以后可以省去该参数。\\
+\begin{lstlisting}
+>>git push origin <branchID>
+\end{lstlisting}
+将本地库中的内容推送到远程库上。
+\subsection{Clone from a remote repository}
+\begin{lstlisting}
+>>git clone git@github.com:<Name>/<Repository>.git
+\end{lstlisting}
+克隆远程库到本地。
+\end{CJK*}
+\end{homeworkProblem}
 
+%----------------------------------------------------------------------------------------
+%    Chapter 6
+%----------------------------------------------------------------------------------------
+\begin{homeworkProblem}
+\begin{CJK*}{GBK}{song}
+\section{Branch Management}
+\subsection{Create/Switch/Delete/View branch}
+\begin{lstlisting}
+>>git checkout -b <branchID>
+\end{lstlisting}
+创建并切换到分支$<branchID>$。\\
+\begin{lstlisting}
+>>git branch <branchID>
+\end{lstlisting}
+创建分支$<branchID>$。\\
+\begin{lstlisting}
+>>git checkout <branchID>
+\end{lstlisting}
+并换到分支$<branchID>$。\\
+\begin{lstlisting}
+>>git branch -d <branchID>
+\end{lstlisting}
+删除分支$<branchID>$。\\
+\begin{lstlisting}
+>>git branch -D <branchID>
+\end{lstlisting}
+强行删除未合并分支$<branchID>$。\\
+\begin{lstlisting}
+>>git branch
+\end{lstlisting}
+查看分支，当前分支会标一个*号。
+\subsection{Merge branchs}
+\begin{lstlisting}
+>>git merge <branchID>
+\end{lstlisting}
+将$<branchID>$合并到当前分支中。当出现冲突时，冲突信息会被包含在合并的文件中，需要手动在相应文件中修改再提交。$<<<<<<<$与$=======$之间的部分是当前版本的，$=======$与$>>>>>>>$之间的部分是分支的。\\
+这种合并模式在删除分支后会丢掉分支信息。\\
+\begin{lstlisting}
+>>git merge --no-ff -m "<Message>" <branchID>
+\end{lstlisting}
+使用--no-ff参数禁止Fast Forward的合并。即使删除分支，在log中查看的时候任然不会丢失分支信息。
+\subsection{Stash branch}
+\begin{lstlisting}
+>>git stash
+\end{lstlisting}
+用于储藏工作现场。当你突然有个Bug要调的时候，然而又有手头工作还没有做完，stash命令就很有用了。\\
+\begin{lstlisting}
+>>git stash list
+\end{lstlisting}
+查看储藏区。\\
+\begin{lstlisting}
+>>git stash pop
+\end{lstlisting}
+从储藏区恢复文件并删除储藏区内容。\\
+\begin{lstlisting}
+>>git stash apply
+\end{lstlisting}
+从储藏区恢复文件。\\
+\begin{lstlisting}
+>>git stash drop
+\end{lstlisting}
+删除储藏区内容。\\
+\begin{lstlisting}
+>>git stash apply stash@{<NumberID>}
+\end{lstlisting}
+由于允许多次stash，该指令可以恢复指定的储藏区内容。$<NumberID>$是内容的序号。
+\subsection{Branch on remote repository}
+\begin{lstlisting}
+>>git remote
+\end{lstlisting}
+查看远程库分支信息。\\
+\begin{lstlisting}
+>>git remote -v
+\end{lstlisting}
+详细查看远程库分支信息。\\
+查看远程库分支信息。\\
+\begin{lstlisting}
+>>git push origin <BranchID>
+\end{lstlisting}
+将分支推送到远程。\\
+\begin{lstlisting}
+>>git checkout -b <BranchID> origin/<RemoteSubbranchID>
+\end{lstlisting}
+将远程库的分支同步到本地。\\
+\begin{lstlisting}
+>>git branch --set-upstream <BranchID> origin/<RemoteSubbranchID>
+\end{lstlisting}
+指定本地的分支与远程分支的链接。\\
+\subsection{About teamwork}
+多人协作的流程一般是：
+\begin{enumerate}
+\item 试图用git push origin branch-name推送自己的修改
+\item 如果推送失败，则因为远程分支比本地更新，需要先用git pull试图合并。如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch $--$set-upstream branch-name origin/branch-name
+\item 如果合并有冲突，则解决冲突，并在本地提交
+\item 没有冲突或者解决冲突后，再用git push origin origin branch-name推送就能成功
+\end{enumerate}
+\end{CJK*}
+\end{homeworkProblem}
+%----------------------------------------------------------------------------------------
+%    Chapter 7
+%----------------------------------------------------------------------------------------
+\begin{homeworkProblem}
+\begin{CJK*}{GBK}{song}
+\section{Tags}
+\subsection{Create tags}
+\begin{lstlisting}
+>>git tag <TagName>
+\end{lstlisting}
+为当前版本打上标签。\\
+\begin{lstlisting}
+>>git tag <TagName> <CommitID>
+\end{lstlisting}
+为某个版本打上标签。\\
+\subsection{Show tags}
+\begin{lstlisting}
+>>git tag
+\end{lstlisting}
+显示已经存在的标签。\\
+\begin{lstlisting}
+>>git show <TagName>
+\end{lstlisting}
+显示某个标签的具体信息。
+\subsection{Delete tags}
+\begin{lstlisting}
+>>git tag -d <TagName>
+\end{lstlisting}
+在本地删除特定标签。\\
+\begin{lstlisting}
+>>git push origin :refs/tags/<TagName>
+\end{lstlisting}
+在本地删除特定标签后，再用此命令在远程库中删除该标签。\\
+\subsection{Push tags}
+\begin{lstlisting}
+>>git push origin --tags
+\end{lstlisting}
+推送特定标签。
+\end{CJK*}
+\end{homeworkProblem}
+%----------------------------------------------------------------------------------------
+%    Chapter 7
+%----------------------------------------------------------------------------------------
+\begin{homeworkProblem}
+\begin{CJK*}{GBK}{song}
+\section{Customize Git}
+\subsection{Git ignore}
+改写.gitignore文件，让Git自动忽略这些文件。可参照：\url{https://github.com/github/gitignore}。
+\subsection{Alias}
+\begin{lstlisting}
+>>git config --global alias.st status
+\end{lstlisting}
+用st代替status。\\
+可以通过配置.gitconfig文件来修改alias。
+
+\end{CJK*}
+\end{homeworkProblem}
 \end{document}
